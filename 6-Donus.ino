@@ -50,7 +50,7 @@ float Ki_3 = 0.000;
 float Kd_3 = 0.000;
 
 //DERİNLİK PID / YAW KATSAYILARI: 100Hz
-float Kp_4 = 6D.0;
+float Kp_4 = 8.0;
 float Ki_4 = 0.000;
 float Kd_4 = 0.000;
 
@@ -213,19 +213,19 @@ void loop() {
   else if (Motor_3 <= Min_deger) Motor_3 = Min_deger;
   //**************************************************************
 
-  Motor_4 = 1500 - yunuslama - yatis;
+  Motor_4 = 1500  - yunuslama - yatis - derinlik;
   if (Motor_4 >= Mak_deger) Motor_4 = Mak_deger;
   else if (Motor_4 <= Min_deger) Motor_4 = Min_deger;
 
-  Motor_5 = 1500 - yunuslama + yatis;
+  Motor_5 = 1500 - yunuslama + yatis - derinlik;
   if (Motor_5 >= Mak_deger) Motor_5 = Mak_deger;
   else if (Motor_5 <= Min_deger) Motor_5 = Min_deger;
 
-  Motor_6 = 1500 - yunuslama + yatis;
+  Motor_6 = 1500 - yunuslama + yatis + derinlik;
   if (Motor_6 >= Mak_deger) Motor_6 = Mak_deger;
   else if (Motor_6 <= Min_deger) Motor_6 = Min_deger;
 
-  Motor_7 = 1500 - yunuslama - yatis;
+  Motor_7 = 1500  yunuslama - yatis + derinlik;
   if (Motor_7 >= Mak_deger) Motor_7 = Mak_deger;
   else if (Motor_7 <= Min_deger) Motor_7 = Min_deger;
 
@@ -233,34 +233,34 @@ void loop() {
   if (Motor_Aktif == true)
   {
     //***Tutum Kontrol***
-    Ext_Servo_Kontrol.Ext_Servo(4, Motor_4 + 10);
-    Ext_Servo_Kontrol.Ext_Servo(5, Motor_5 + 20);
+    Ext_Servo_Kontrol.Ext_Servo(4, Motor_4);
+    Ext_Servo_Kontrol.Ext_Servo(5, Motor_5);
     Ext_Servo_Kontrol.Ext_Servo(6, Motor_6);
-    Ext_Servo_Kontrol.Ext_Servo(7, Motor_7 + 20);
+    Ext_Servo_Kontrol.Ext_Servo(7, Motor_7);
 
     //***Sapma Kontrol***
     Ext_Servo_Kontrol.Ext_Servo(0, Motor_0);
     Ext_Servo_Kontrol.Ext_Servo(1, Motor_1);
-    Ext_Servo_Kontrol.Ext_Servo(2, Motor_2 + 20);
+    Ext_Servo_Kontrol.Ext_Servo(2, Motor_2);
     Ext_Servo_Kontrol.Ext_Servo(3, Motor_3);
   }
   else
   {
     //***Tutum Kontrol***
-    Ext_Servo_Kontrol.Ext_Servo(4, Motor_Hiz + 10);
-    Ext_Servo_Kontrol.Ext_Servo(5, Motor_Hiz + 20);
+    Ext_Servo_Kontrol.Ext_Servo(4, Motor_Hiz );
+    Ext_Servo_Kontrol.Ext_Servo(5, Motor_Hiz );
     Ext_Servo_Kontrol.Ext_Servo(6, Motor_Hiz ); //OYNAYAN MOTOR
-    Ext_Servo_Kontrol.Ext_Servo(7, Motor_Hiz + 20);
+    Ext_Servo_Kontrol.Ext_Servo(7, Motor_Hiz );
 
     //***Sapma Kontrol***
     Ext_Servo_Kontrol.Ext_Servo(0, Motor_Hiz);
     Ext_Servo_Kontrol.Ext_Servo(1, Motor_Hiz);
-    Ext_Servo_Kontrol.Ext_Servo(2, Motor_Hiz + 20);
+    Ext_Servo_Kontrol.Ext_Servo(2, Motor_Hiz );
     Ext_Servo_Kontrol.Ext_Servo(3, Motor_Hiz);
   }
 
 
-  //Ekranda_Goster();
+  Ekranda_Goster();
 }
 
 void Ekranda_Goster()
@@ -294,7 +294,7 @@ void Ekranda_Goster()
   //Serial.print("Yunuslama > "); Serial.println(yunuslama);
   //Serial.print("Yatış > "); Serial.println(yatis);
   //Serial.print("Sapma > "); Serial.println(sapma);
-  //Serial.print("Derinlik > "); Serial.println(derinlik);
+  Serial.print("Derinlik > "); Serial.println(derinlik);
   //Serial.print("Pusula > "); Serial.println(pusula);
 
   //Serial.print("Kalan Açı > "); Serial.println(kalan_aci);
