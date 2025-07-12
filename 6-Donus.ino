@@ -19,8 +19,8 @@ int Gorev_Sirasi = 0; //Göreve başlama sırasını temsil eder
 bool yeni_gorev_atama = false;
 
 int Motor_Hiz = 1500; // Stop PWM
-int Mak_deger = 1720; // Maksimum PWM
-int Min_deger = 1320; // Minimum PWM
+int Mak_deger = 1750; // Maksimum PWM
+int Min_deger = 1250; // Minimum PWM
 
 int Motor_0, Motor_1, Motor_2, Motor_3; // İtiş Motorları
 int Motor_4, Motor_5, Motor_6, Motor_7; // Batış Motorları
@@ -50,12 +50,12 @@ float Ki_3 = 0.000;
 float Kd_3 = 0.000;
 
 //DERİNLİK PID / YAW KATSAYILARI: 100Hz
-float Kp_4 = 8.0;
+float Kp_4 = 6D.0;
 float Ki_4 = 0.000;
 float Kd_4 = 0.000;
 
 //PUSULA PID / YAW KATSAYILARI: 100Hz
-float Kp_5 = 2;
+float Kp_5 = 3;
 float Ki_5 = 0.000;
 float Kd_5 = 0.000;
 
@@ -91,7 +91,7 @@ void setup() {
   Ext_Servo_Kontrol.begin(); //Harici Servo Kullanımını Aktifleştirme
   Ext_Servo_Kontrol.Ext_Servo_Fr(60); //Harici Servo için Çalışma Frekans Belirleme
 
-  delay(10000);
+  delay(3000);
 
   Ext_Servo_Kontrol.Ext_Servo(0, 0);
   Ext_Servo_Kontrol.Ext_Servo(1, 0);
@@ -106,12 +106,12 @@ void setup() {
 
   Ext_Servo_Kontrol.Ext_Servo(0, Motor_Hiz);
   Ext_Servo_Kontrol.Ext_Servo(1, Motor_Hiz);
-  Ext_Servo_Kontrol.Ext_Servo(2, Motor_Hiz + 20);
+  Ext_Servo_Kontrol.Ext_Servo(2, Motor_Hiz);
   Ext_Servo_Kontrol.Ext_Servo(3, Motor_Hiz);
-  Ext_Servo_Kontrol.Ext_Servo(4, Motor_Hiz + 10);
-  Ext_Servo_Kontrol.Ext_Servo(5, Motor_Hiz + 20);
+  Ext_Servo_Kontrol.Ext_Servo(4, Motor_Hiz);
+  Ext_Servo_Kontrol.Ext_Servo(5, Motor_Hiz);
   Ext_Servo_Kontrol.Ext_Servo(6, Motor_Hiz);
-  Ext_Servo_Kontrol.Ext_Servo(7, Motor_Hiz + 20);
+  Ext_Servo_Kontrol.Ext_Servo(7, Motor_Hiz);
 
   //PID değişkenleri:
   Veri_Kontrol.setup_PID_1();
@@ -196,36 +196,36 @@ void loop() {
   //yatis = 0;
   //yunuslama = 0;
 
-  Motor_0 = 1500 - sapma + ileri_Komut + geri_Komut + sol_Komut2  + sag_Komut2 + arti_Komut2 + eksi_Komut2 - pusula;
+  Motor_0 = 1500  + ileri_Komut + geri_Komut + sol_Komut2 + sag_Komut2 + arti_Komut2 + eksi_Komut2 - pusula;
   if (Motor_0 >= Mak_deger) Motor_0 = Mak_deger;
   else if (Motor_0 <= Min_deger) Motor_0 = Min_deger;
 
-  Motor_1 = 1500 - sapma + ileri_Komut2 + geri_Komut2 + sol_Komut2  + sag_Komut2 + arti_Komut2 + eksi_Komut2 - pusula;
+  Motor_1 = 1500 + ileri_Komut2 + geri_Komut + sol_Komut2 + sag_Komut2 + arti_Komut2 + eksi_Komut2 - pusula;
   if (Motor_1 >= Mak_deger) Motor_1 = Mak_deger;
   else if (Motor_1 <= Min_deger) Motor_1 = Min_deger;
 
-  Motor_2 = 1500 - sapma + ileri_Komut + geri_Komut + sol_Komut2 + sag_Komut2 + arti_Komut1 + eksi_Komut1 - pusula;
+  Motor_2 = 1500 + ileri_Komut + geri_Komut + sol_Komut2 + sag_Komut2 + arti_Komut1 + eksi_Komut1 - pusula;
   if (Motor_2 >= Mak_deger) Motor_2 = Mak_deger;
   else if (Motor_2 <= Min_deger) Motor_2 = Min_deger;
 
-  Motor_3 = 1500 + sapma + ileri_Komut + geri_Komut  + sol_Komut1  + sag_Komut1 + arti_Komut2 + eksi_Komut2 + pusula;
+  Motor_3 = 1500 + ileri_Komut2 + geri_Komut2 + sol_Komut2 + sag_Komut2 + arti_Komut1 + eksi_Komut1 - pusula;
   if (Motor_3 >= Mak_deger) Motor_3 = Mak_deger;
   else if (Motor_3 <= Min_deger) Motor_3 = Min_deger;
   //**************************************************************
 
-  Motor_4 = 1500 + yunuslama + yatis + derinlik;
+  Motor_4 = 1500 - yunuslama - yatis;
   if (Motor_4 >= Mak_deger) Motor_4 = Mak_deger;
   else if (Motor_4 <= Min_deger) Motor_4 = Min_deger;
 
-  Motor_5 = 1500 + yunuslama - yatis + derinlik;
+  Motor_5 = 1500 - yunuslama + yatis;
   if (Motor_5 >= Mak_deger) Motor_5 = Mak_deger;
   else if (Motor_5 <= Min_deger) Motor_5 = Min_deger;
 
-  Motor_6 = 1500 - yunuslama + yatis + derinlik;
+  Motor_6 = 1500 - yunuslama + yatis;
   if (Motor_6 >= Mak_deger) Motor_6 = Mak_deger;
   else if (Motor_6 <= Min_deger) Motor_6 = Min_deger;
 
-  Motor_7 = 1500 + yunuslama + yatis - derinlik;
+  Motor_7 = 1500 - yunuslama - yatis;
   if (Motor_7 >= Mak_deger) Motor_7 = Mak_deger;
   else if (Motor_7 <= Min_deger) Motor_7 = Min_deger;
 
